@@ -4,12 +4,13 @@
     "description": "Testing deployment on Google Cloud and pricing",
     "main": "bot.js",
     "scripts": {
-        "start": "node bot.js"
+        "start": "node bot.js",
+        "build": "tsc"
     },
     "author": "Carl-Hugo Marcotte",
     "license": "ISC",
     "dependencies": {
-        "discord.js": "^11.5.1"
+        "discord.js": "11.5.1"
     },
     "devDependencies": {
         "@types/node": "^13.7.4",
