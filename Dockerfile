@@ -4,7 +4,7 @@ WORKDIR /app
 
 RUN npm install -g typescript
 
-COPY ["*.ts", "config.js", "*.json", "./"]
+COPY ["*.ts", "*.json", "./"]
 RUN npm ci --quiet && npm run build
 
 FROM node:13.8.0-slim AS deploy
@@ -13,7 +13,6 @@ WORKDIR /app
 
 COPY --from=build /app/package*.json ./
 COPY --from=build /app/build ./
-COPY --from=build /app/config.* ./
 
 RUN npm ci --quiet --only=production
 

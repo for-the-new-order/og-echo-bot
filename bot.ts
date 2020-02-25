@@ -1,9 +1,9 @@
 import * as Discord from 'discord.js';
+import { configuration } from './config';
 
-const config = require('./config').configuration;
 const bot = new Discord.Client();
 
-bot.login(config.auth.token);
+bot.login(configuration.auth.token);
 
 bot.on('ready', function(evt: any) {
     console.info('Connected');
