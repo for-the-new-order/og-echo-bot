@@ -7,7 +7,7 @@ RUN npm install -g typescript
 COPY ["*.ts", "*.json", "./"]
 RUN npm ci --quiet && npm run build
 
-FROM node:13.8.0-slim AS deploy
+FROM node:13.8.0-alpine AS deploy
 ENV NODE_ENV=production
 WORKDIR /app
 
