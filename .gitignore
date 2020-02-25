@@ -65,3 +65,5 @@ config.secrets.json
 
 # Generated JS files
 src/*.js
+bot.js
+*.js.map
