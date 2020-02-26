@@ -36,20 +36,27 @@ steps:
       enabled: false
 
     - task: DownloadSecureFile@1
+      name: environment
       displayName: 'Download secure file'
       inputs:
           secureFile: $(bot.envFile)
 
-    - bash: 'cp $(configs.secureFilePath) $(Build.SourcesDirectory)/$(bot.envFile)'
+    - bash: 'cp $(environment.secureFilePath) $(Build.SourcesDirectory)/$(bot.envFile)'
       displayName: 'Bash Script'
       enabled: false
 
     - bash: |
-        echo "configs.secureFilePath: $(configs.secureFilePath)"
+        echo "secureFilePath: $(environment.secureFilePath)"
         echo "destination: $(Build.SourcesDirectory)/$(bot.envFile)"
-      displayName: 'Bash Script'
+      displayName: 'Echo secure file 1'
       enabled: true
 
+    - script: |
+        echo "secureFilePath: $(environment.secureFilePath)"
+        echo "destination: $(Build.SourcesDirectory)/$(bot.envFile)"
+      displayName: 'Echo secure file 2'
+      enabled: true
+      
     - task: CopyFilesOverSSH@0
       displayName: 'Securely copy files to the remote machine'
       inputs:
