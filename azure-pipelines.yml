@@ -39,12 +39,12 @@ jobs:
         command: 'Push an image'
         imageName: '$(bot.image):$(Build.BuildNumber)'
     enabled: true
-    #condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
 
 - job: Deploy
   displayName: Deploy Container
   dependsOn: Build
-  #condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
   steps:
   - bash: |
       PACKAGE_VERSION=$(grep '"version":' package.json | cut -d\" -f4)
