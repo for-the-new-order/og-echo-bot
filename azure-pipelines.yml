@@ -24,6 +24,7 @@ steps:
           containerregistrytype: 'Container Registry'
           dockerRegistryEndpoint: $(bot.dockerRegistryEndpoint)
           imageName: '$(bot.image):$(Build.BuildNumber)'
+      enabled: false
 
     - task: Docker@1
       displayName: 'Push an image'
@@ -32,6 +33,7 @@ steps:
           dockerRegistryEndpoint: $(bot.dockerRegistryEndpoint)
           command: 'Push an image'
           imageName: '$(bot.image):$(Build.BuildNumber)'
+      enabled: false
 
     - task: DownloadSecureFile@1
       displayName: 'Download secure file'
@@ -55,6 +57,7 @@ steps:
           sourceFolder: '$(Build.SourcesDirectory)'
           contents: $(bot.envFile)
           failOnEmptySource: true
+      enabled: false
 
     - task: SSH@0
       displayName: 'Run shell inline on remote machine'
@@ -76,3 +79,4 @@ steps:
 
               # Cleanup
               docker system prune -f -a
+      enabled: false
