@@ -39,6 +39,13 @@ steps:
 
     - bash: 'cp $(configs.secureFilePath) $(Build.SourcesDirectory)/$(bot.envFile)'
       displayName: 'Bash Script'
+      enabled: false
+
+    - bash: |
+        echo "configs.secureFilePath: $(configs.secureFilePath)"
+        echo "destination: $(Build.SourcesDirectory)/$(bot.envFile)"
+      displayName: 'Bash Script'
+      enabled: true
 
     - task: CopyFilesOverSSH@0
       displayName: 'Securely copy files to the remote machine'
