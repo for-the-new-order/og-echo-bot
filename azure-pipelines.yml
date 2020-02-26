@@ -32,7 +32,7 @@ jobs:
 
 - job: Deploy
   dependsOn: Build
-  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+  #condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
   steps:
 
   - bash: |
