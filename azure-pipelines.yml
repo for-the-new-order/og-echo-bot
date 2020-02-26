@@ -24,7 +24,7 @@ steps:
           containerregistrytype: 'Container Registry'
           dockerRegistryEndpoint: $(bot.dockerRegistryEndpoint)
           imageName: '$(bot.image):$(Build.BuildNumber)'
-      enabled: false
+      enabled: true
 
     - task: Docker@1
       displayName: 'Push an image'
@@ -33,7 +33,7 @@ steps:
           dockerRegistryEndpoint: $(bot.dockerRegistryEndpoint)
           command: 'Push an image'
           imageName: '$(bot.image):$(Build.BuildNumber)'
-      enabled: false
+      enabled: true
 
     - task: DownloadSecureFile@1
       name: environment
@@ -43,20 +43,20 @@ steps:
 
     - bash: 'cp $(environment.secureFilePath) $(Build.SourcesDirectory)/$(bot.envFile)'
       displayName: 'Bash Script'
-      enabled: false
+      enabled: true
 
     - bash: |
         echo "secureFilePath: $(environment.secureFilePath)"
         echo "destination: $(Build.SourcesDirectory)/$(bot.envFile)"
       displayName: 'Echo secure file 1'
-      enabled: true
+      enabled: false
 
     - script: |
         echo "secureFilePath: $(environment.secureFilePath)"
         echo "destination: $(Build.SourcesDirectory)/$(bot.envFile)"
       displayName: 'Echo secure file 2'
-      enabled: true
-      
+      enabled: false
+
     - task: CopyFilesOverSSH@0
       displayName: 'Securely copy files to the remote machine'
       inputs:
@@ -64,7 +64,7 @@ steps:
           sourceFolder: '$(Build.SourcesDirectory)'
           contents: $(bot.envFile)
           failOnEmptySource: true
-      enabled: false
+      enabled: true
 
     - task: SSH@0
       displayName: 'Run shell inline on remote machine'
@@ -86,4 +86,4 @@ steps:
 
               # Cleanup
               docker system prune -f -a
-      enabled: false
+      enabled: true
