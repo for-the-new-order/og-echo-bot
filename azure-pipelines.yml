@@ -16,6 +16,7 @@ variables:
 
 jobs:
 - job: Build
+  displayName: Build Image
   steps:
   - bash: |
         PACKAGE_VERSION=$(grep '"version":' package.json | cut -d\" -f4)
@@ -30,16 +31,6 @@ jobs:
         imageName: '$(bot.image):$(Build.BuildNumber)'
     enabled: true
 
-- job: Deploy
-  dependsOn: Build
-  #condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
-  steps:
-
-  - bash: |
-      PACKAGE_VERSION=$(grep '"version":' package.json | cut -d\" -f4)
-      echo "##vso[build.updatebuildnumber]$PACKAGE_VERSION"
-    displayName: 'Update Build Number'
-
   - task: Docker@1
     displayName: 'Push an image'
     inputs:
@@ -48,6 +39,17 @@ jobs:
         command: 'Push an image'
         imageName: '$(bot.image):$(Build.BuildNumber)'
     enabled: true
+    #condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+
+- job: Deploy
+  displayName: Deploy Container
+  dependsOn: Build
+  #condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+  steps:
+  - bash: |
+      PACKAGE_VERSION=$(grep '"version":' package.json | cut -d\" -f4)
+      echo "##vso[build.updatebuildnumber]$PACKAGE_VERSION"
+    displayName: 'Update Build Number'
 
   - task: DownloadSecureFile@1
     name: environment
