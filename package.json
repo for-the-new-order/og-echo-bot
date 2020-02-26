@@ -1,5 +1,5 @@
 {
-    "name": "discordbotongooglecloud",
+    "name": "og-echo-bot",
     "version": "1.2.0",
     "description": "Testing deployment on Google Cloud and pricing",
     "main": "bot.js",
