@@ -1,6 +1,5 @@
 trigger:
     - master
-    - azure-pipelines
 
 pool:
     name: Hosted Ubuntu 1604
