@@ -2,6 +2,8 @@
 
 A little Discord bot that echoes what you type back to you, using the `!ogecho` command. For example, typing: `!ogecho write this back to me` should have the bot reply to you `write this back to me` in a grey box.
 
+The bot also support the `version` command, echoing its version. For example, `!ogecho version` should write `og-echo-bot: 1.3.0` (the version number `1.3.0` may change).
+
 ## Goal
 
 This is a simple experiment that I made to test deployment at different cloud provider using their serverless or Virtual Machine offerings.
