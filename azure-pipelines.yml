@@ -75,8 +75,7 @@ steps:
               docker pull $(bot.image):$(Build.BuildNumber)
               
               # Kill/Remove the running container
-              # docker ps | grep $(bot.imageName) && docker kill $(bot.imageName) && docker rm $(bot.imageName)
-              (docker ps | grep $(bot.imageName)) && docker kill $(docker ps | grep $(bot.imageName) | cut -c 1-12)
+              docker ps | grep $(bot.imageName) && docker kill $(bot.imageName) && docker rm $(bot.imageName) || echo "No container named $(bot.imageName) is running."
               
               # Run the new image
               docker run --env-file ./$(bot.envFile) --restart=always --name $(bot.imageName) -d $(bot.image):$(Build.BuildNumber)
