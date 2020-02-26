@@ -1,8 +1,8 @@
 import * as Discord from 'discord.js';
 import { configuration } from './config';
 
-var botName = require('./../../package.json').name;
-var botVersion = require('./../../package.json').version;
+var botName = require('./package.json').name;
+var botVersion = require('./package.json').version;
 
 const bot = new Discord.Client();
 
