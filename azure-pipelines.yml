@@ -1,11 +1,15 @@
+trigger:
+    - master
+
 pool:
     name: Hosted Ubuntu 1604
 
 variables:
-    bot.image: 'carlhugo/ogbot'
-    bot.imageName: 'ogbot'
+    bot.image: 'carlhugo/ogechobot'
+    bot.imageName: 'ogechobot'
     bot.sshEndpoint: 'Google Cloud Bots'
     bot.dockerRegistryEndpoint: 'Docker Hub'
+    bot.envFile: 'ogechobot.env'
 
 steps:
     - bash: |
@@ -31,9 +35,9 @@ steps:
     - task: DownloadSecureFile@1
       displayName: 'Download secure file'
       inputs:
-          secureFile: 'bots.env'
+          secureFile: $(bot.envFile)
 
-    - bash: 'cp $(configs.secureFilePath) $(Build.SourcesDirectory)/bots.env'
+    - bash: 'cp $(configs.secureFilePath) $(Build.SourcesDirectory)/$(bot.envFile)'
       displayName: 'Bash Script'
 
     - task: CopyFilesOverSSH@0
@@ -41,7 +45,7 @@ steps:
       inputs:
           sshEndpoint: $(bot.sshEndpoint)
           sourceFolder: '$(Build.SourcesDirectory)'
-          contents: bots.env
+          contents: $(bot.envFile)
           failOnEmptySource: true
 
     - task: SSH@0
