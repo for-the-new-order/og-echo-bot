@@ -70,20 +70,16 @@ steps:
       displayName: 'Run shell inline on remote machine'
       inputs:
           sshEndpoint: $(bot.sshEndpoint)
-          runOptions: inline
-          inline: |
+          commands: |
               # Pull the new image
               docker pull "$(bot.image):$(Build.BuildNumber)"
-
+              
               # Stop the running container
-              if (docker ps | grep $(bot.imageName))
-              then
-                  docker kill $(docker ps | grep $(bot.imageName) | cut -c 1-12)
-              fi
-
+              (docker ps | grep $(bot.imageName)) && docker kill $(docker ps | grep $(bot.imageName) | cut -c 1-12)
+              
               # Run the new image
               docker run --restart=always -d "$(bot.image):$(Build.BuildNumber)"
-
+              
               # Cleanup
               docker system prune -f -a
       enabled: true
