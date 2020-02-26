@@ -1,13 +1,13 @@
 # Og's Discord echo bot
 
-This little bot echoes what you type back to you.
+A little Discord bot that echoes what you type back to you, using the `!ogecho` command. For example, typing: `!ogecho write this back to me` should have the bot reply to you `write this back to me` in a grey box.
 
 ## Goal
 
 This is a simple experiment that I made to test deployment at different cloud provider using their serverless or Virtual Machine offerings.
 The bot is built using Node.js and Typescript and is packed into a Docker container.
 
-## Technology stack
+### Technology stack
 
 -   Docker
 -   Node.js
@@ -26,6 +26,8 @@ docker build --rm -f "Dockerfile" -t ogechobot . --no-cache
 Make sure you created an `.env` file containing the appropriate environment variables, see `.env-template`, then:
 
 -   (locally) `docker run --env-file ./.env ogechobot`
--   (host) `docker run --env-file ./.env --restart=always -d "registry.hub.docker.com/carlhugo/ogechobot:1.1.0"`
-    -   Change `1.1.0` by the version that you want to run
+-   (host) `docker run --env-file ./.env --restart=always -d "registry.hub.docker.com/carlhugo/ogechobot:1.0.0"`
+    -   Change `1.0.0` by the version that you want to run
     -   Make sure to copy the `.env` file on the remote machine
+
+You can also take a look at the `azure-pipelines.yml` which contains the CI/CD pipeline tasks.
