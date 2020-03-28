@@ -23,3 +23,9 @@ resources:
 
 jobs:
   - template: BuildAndDeployBot.yml@shared
+    parameters:
+      bot.image: ''
+      bot.imageName: ''
+      bot.sshEndpoint: ''
+      bot.dockerRegistryEndpoint: ''
+      bot.envFile: ''
