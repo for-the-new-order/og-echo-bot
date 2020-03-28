@@ -19,6 +19,7 @@ resources:
     - repository: shared
       type: github
       name: for-the-new-order/BuildTemplates
+      endpoint: for-the-new-order
 
 jobs:
   - template: BuildAndDeployBot.yml@shared
