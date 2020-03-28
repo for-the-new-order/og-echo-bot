@@ -1,8 +1,8 @@
 trigger:
   batch: true
   branches:
-    include:
-      - master
+      include:
+          - master
 
 pool:
   name: Hosted Ubuntu 1604
@@ -14,76 +14,11 @@ variables:
   bot.dockerRegistryEndpoint: 'Docker Hub'
   bot.envFile: 'ogechobot.env'
 
+resources:
+  repositories:
+    - repository: shared
+      type: github
+      name: for-the-new-order/BuildTemplates
+
 jobs:
-- job: Build
-  displayName: Build Image
-  steps:
-  - bash: |
-        PACKAGE_VERSION=$(grep '"version":' package.json | cut -d\" -f4)
-        echo "##vso[build.updatebuildnumber]$PACKAGE_VERSION"
-    displayName: 'Update Build Number'
-
-  - task: Docker@1
-    displayName: 'Build an image'
-    inputs:
-        containerregistrytype: 'Container Registry'
-        dockerRegistryEndpoint: $(bot.dockerRegistryEndpoint)
-        imageName: '$(bot.image):$(Build.BuildNumber)'
-    enabled: true
-
-  - task: Docker@1
-    displayName: 'Push an image'
-    inputs:
-        containerregistrytype: 'Container Registry'
-        dockerRegistryEndpoint: $(bot.dockerRegistryEndpoint)
-        command: 'Push an image'
-        imageName: '$(bot.image):$(Build.BuildNumber)'
-    enabled: true
-    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
-
-- job: Deploy
-  displayName: Deploy Container
-  dependsOn: Build
-  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
-  steps:
-  - bash: |
-      PACKAGE_VERSION=$(grep '"version":' package.json | cut -d\" -f4)
-      echo "##vso[build.updatebuildnumber]$PACKAGE_VERSION"
-    displayName: 'Update Build Number'
-
-  - task: DownloadSecureFile@1
-    name: environment
-    displayName: 'Download secure file'
-    inputs:
-        secureFile: $(bot.envFile)
-
-  - bash: 'cp $(environment.secureFilePath) $(Build.SourcesDirectory)/$(bot.envFile)'
-    displayName: 'Bash Script'
-    enabled: true
-
-  - task: CopyFilesOverSSH@0
-    displayName: 'Securely copy files to the remote machine'
-    inputs:
-        sshEndpoint: $(bot.sshEndpoint)
-        sourceFolder: '$(Build.SourcesDirectory)'
-        contents: $(bot.envFile)
-        failOnEmptySource: true
-    enabled: true
-
-  - task: SSH@0
-    displayName: 'Run shell inline on remote machine'
-    inputs:
-        sshEndpoint: $(bot.sshEndpoint)
-        commands: |
-            # Pull the new image
-            docker pull $(bot.image):$(Build.BuildNumber)
-            
-            # Kill/Remove the running container
-            docker ps | grep $(bot.imageName) && docker kill $(bot.imageName) && docker rm $(bot.imageName) || echo "No container named $(bot.imageName) is running."
-            
-            # Run the new image
-            docker run --env-file ./$(bot.envFile) --restart=always --name $(bot.imageName) -d $(bot.image):$(Build.BuildNumber)
-            
-            # Cleanup
-            docker system prune -f -a
-    enabled: true
+  - template: BuildAndDeployBot.yml@shared
