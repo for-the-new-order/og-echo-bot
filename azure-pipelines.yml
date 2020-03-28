@@ -25,8 +25,8 @@ jobs:
   - template: BuildAndDeployBot.yml@shared
     parameters:
       bot:
-        image: ''
-        imageName: ''
-        sshEndpoint: ''
-        dockerRegistryEndpoint: ''
-        envFile: ''
+        image: ${{ bot.image }}
+        imageName: ${{ bot.imageName }}
+        sshEndpoint: ${{ bot.sshEndpoint }}
+        dockerRegistryEndpoint: ${{ bot.dockerRegistryEndpoint }}
+        envFile: ${{ bot.envFile }}
