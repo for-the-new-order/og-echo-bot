@@ -30,3 +30,4 @@ jobs:
         sshEndpoint: $(bot.sshEndpoint)
         dockerRegistryEndpoint: $(bot.dockerRegistryEndpoint)
         envFile: $(bot.envFile)
+      buildNumber: $(Build.BuildNumber)
