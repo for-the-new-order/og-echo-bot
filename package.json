@@ -1,6 +1,6 @@
 {
     "name": "og-echo-bot",
-    "version": "1.4.0",
+    "version": "1.4.1",
     "description": "Testing deployment on Google Cloud and pricing",
     "main": "bot.js",
     "scripts": {
